@@ -1,4 +1,5 @@
 // src/main/java/com/example/campustrade/controller/UserController.java
+//用户控制器，处理用户注册和登录请求
 package com.example.campustrade.controller;
 
 import com.example.campustrade.entity.User;
@@ -14,19 +15,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@RestController // 告诉Spring这是个控制器，并且返回的是JSON数据
-@RequestMapping("/api/users") // 这个控制器下所有接口的URL前缀都是 /api/users
+@RestController // 控制器，返回JSON数据
+@RequestMapping("/api/users") // 定义了这个控制器管辖的URL前缀
+
+
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     // 注册接口
-    @PostMapping("/register")
+    @PostMapping("/register") //指明这个方法只处理 HTTP POST 类型的请求
     public ResponseEntity<String> register(@RequestBody User user) {
+        //接收前端传来的JSON数据，spring自动转成一个User对象:new User()
         boolean success = userService.register(user);
         if (success) {
-            return ResponseEntity.ok("注册成功！");
+            return ResponseEntity.ok("注册成功！"); //返回http响应
         } else {
             return ResponseEntity.badRequest().body("注册失败，用户名可能已存在。");
         }

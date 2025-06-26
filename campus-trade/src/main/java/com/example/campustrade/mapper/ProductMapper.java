@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface ProductMapper {
 
-    // --- 简单查询方法 ---
+    
     @Select("SELECT * FROM products WHERE id = #{id}")
     Product findById(Integer id);
 
@@ -27,17 +27,24 @@ public interface ProductMapper {
     @Update("UPDATE products SET status = '已下架' WHERE id = #{productId}")
     int updateStatusToTakenDown(Integer productId);
 
-    // --- 复杂查询方法，现在全部改为调用存储过程 ---
+
+    //返回类型是List<Map<String, Object>>，
+    // 因为统计结果的列（如total_count, on_sale_count）在Product实体类中不存在，
+    // 所以用一个通用的Map来接收每一行数据会更方便。
 
     @Select("CALL sp_get_my_products(#{sellerId}, #{keyword}, #{category}, #{minPrice}, #{maxPrice}, #{startTime}, #{endTime})")
     @Options(statementType = StatementType.CALLABLE)
     List<Map<String, Object>> findBySellerIdWithConditions(Map<String, Object> params);
+    //方法签名: 定义Java方法本身,String: Map的键，对应于结果集中每一列的列名。
+    // Object: Map的值，对应于该列在那一行中的具体值。
 
     @Select("CALL sp_get_products_summary(#{keyword}, #{category}, #{minPrice}, #{maxPrice}, #{startTime}, #{endTime})")
     @Options(statementType = StatementType.CALLABLE)
-    List<Map<String, Object>> getProductsSummary(Map<String, Object> params);
+    List<Map<String, Object>> getProductsSummary(Map<String, Object> params);//返回类型是List<Map<String, Object>>
 
     @Select("CALL sp_get_sales_summary(#{keyword}, #{category}, #{minPrice}, #{maxPrice}, #{startTime}, #{endTime})")
     @Options(statementType = StatementType.CALLABLE)
     List<Map<String, Object>> getSalesSummary(Map<String, Object> params);
+
+    // #{...} 语法告诉MyBatis，这里需要使用一个外部传入的参数来替换。
 }

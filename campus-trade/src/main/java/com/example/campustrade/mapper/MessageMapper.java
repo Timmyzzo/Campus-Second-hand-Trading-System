@@ -12,15 +12,26 @@ public interface MessageMapper {
             "VALUES(#{productId}, #{senderId}, #{receiverId}, #{content})")
     int insert(Message message);
 
+
+    //查询两个用户之间的聊天记录
     @Select("SELECT * FROM messages WHERE product_id = #{productId} " +
             "AND ((sender_id = #{userId1} AND receiver_id = #{userId2}) OR (sender_id = #{userId2} AND receiver_id = #{userId1})) " +
             "ORDER BY created_at ASC")
     List<Message> findMessagesBetweenUsers(Integer productId, Integer userId1, Integer userId2);
 
-    /**
-     * 新增：获取与我相关的所有对话的最新一条消息
-     * 这是一个复杂查询，用于构建消息中心列表
-     */
+
+
+
+
+
+
+
+
+
+
+
+
+    //构建消息中心列表
     @Select("SELECT m1.*, p.name as productName, " +
             "       IF(m1.sender_id = #{userId}, r.username, s.username) as otherPartyUsername " +
             "FROM messages m1 " +

@@ -20,15 +20,13 @@ public class MessageService {
     private ProductMapper productMapper; // 引入ProductMapper来查询商品信息
 
     // 发送留言
-    // 在 MessageService.java 中
     public boolean sendMessage(Message message) {
         Product product = productMapper.findById(message.getProductId());
-        if (product == null) {
+        if (product == null) {//检查商品是否存在
             return false;
         }
 
-        // 新逻辑：如果前端没有指定接收者，我们才默认接收者是卖家。
-        // 这样就允许卖家回复时，前端可以明确指定接收者是哪个买家。
+        //自动确定接收者
         if (message.getReceiverId() == null) {
             // 如果发送者不是卖家，那他一定是买家，接收者就应该是卖家
             if (!message.getSenderId().equals(product.getSellerId())) {
@@ -44,10 +42,11 @@ public class MessageService {
             return false;
         }
 
+        //调用Mapper执行插入
         return messageMapper.insert(message) > 0;
     }
 
-    // 获取两个用户在某个商品下的对话
+    // 获取两个用户在某个商品下的对话，直接由mapper处理
     public List<Message> getMessages(Integer productId, Integer userId1, Integer userId2) {
         return messageMapper.findMessagesBetweenUsers(productId, userId1, userId2);
     }

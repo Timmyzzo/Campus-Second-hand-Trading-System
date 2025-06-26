@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// 不再在这里导入 ElMessage
 
 // 导入所有视图组件
 import LoginView from '../views/LoginView.vue'
@@ -13,18 +12,18 @@ import MessageCenterView from '../views/MessageCenterView.vue'
 import AdminView from '../views/AdminView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    { path: '/', redirect: '/login' },
-    { path: '/login', name: 'login', component: LoginView },
+  history: createWebHistory(import.meta.env.BASE_URL),// 1. 使用HTML5 History模式
+  routes: [// 2. 路由规则数组
+    { path: '/', redirect: '/login' },// 3. 根路径重定向
+    { path: '/login', name: 'login', component: LoginView },// 4. 登录页规则
     { path: '/register', name: 'register', component: RegisterView },
     {
-      path: '/home',
-      component: Layout,
+      path: '/home',// 5. 嵌套路由
+      component: Layout,// 6. 父路由组件
       redirect: '/home/products',
-      children: [
+      children: [// 7. 子路由规则
         { path: 'products', name: 'home', component: HomeView },
-        { path: 'detail/:id', name: 'detail', component: DetailView },
+        { path: 'detail/:id', name: 'detail', component: DetailView },// 8. 带参数的路由
         { path: 'publish', name: 'publish', component: PublishView },
         { path: 'profile', name: 'profile', component: ProfileView },
         { path: 'messages', name: 'messages', component: MessageCenterView }
@@ -38,9 +37,9 @@ const router = createRouter({
   ]
 })
 
-// 最终版导航守卫 (已移除 ElMessage)
+// 导航守卫
 router.beforeEach((to, from, next) => {
-  const userStr = localStorage.getItem('user');
+  const userStr = localStorage.getItem('user');// 10. 从localStorage获取用户信息
   const user = userStr ? JSON.parse(userStr) : null;
 
   // 1. 访问管理员页面

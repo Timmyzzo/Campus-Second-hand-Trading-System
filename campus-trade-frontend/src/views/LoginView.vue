@@ -63,7 +63,7 @@ const goToRegister = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f2f5; /* 更柔和的背景色 */
+  background-color: #f0f2f5;
 }
 .login-form {
   width: 400px;
@@ -71,7 +71,7 @@ const goToRegister = () => {
   border: 1px solid #e4e7ed;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); /* 新增：添加阴影效果，让表单浮起来 */
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 h2 {
   text-align: center;

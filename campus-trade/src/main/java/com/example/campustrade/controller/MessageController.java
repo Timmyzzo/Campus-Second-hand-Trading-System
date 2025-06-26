@@ -22,7 +22,7 @@ public class MessageController {
 
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody Message message) {
-        // sendMessage 逻辑保持不变，但我们确保其健壮性
+        // 接收Message对象，调用messageService.sendMessage
         boolean success = messageService.sendMessage(message);
         if (success) {
             return ResponseEntity.ok("留言成功！");
@@ -32,6 +32,7 @@ public class MessageController {
 
     @GetMapping
     public ResponseEntity<List<Message>> getMessages(
+            //使用@RequestParam接收productId, userId1, userId2，查询两个用户间的对话
             @RequestParam Integer productId,
             @RequestParam Integer userId1,
             @RequestParam Integer userId2) {
@@ -39,12 +40,8 @@ public class MessageController {
         return ResponseEntity.ok(messages);
     }
 
-    /**
-     * 新增：获取我的所有对话列表
-     * @param userId 当前登录用户的ID
-     * @return 对话列表
-     */
-    @GetMapping("/my-conversations")
+
+    @GetMapping("/my-conversations")//使用@RequestParam接收当前用户的userId，获取他的所有对话列表
     public ResponseEntity<List<Map<String, Object>>> getMyConversations(@RequestParam Integer userId) {
         List<Map<String, Object>> conversations = messageMapper.findMyConversations(userId);
         return ResponseEntity.ok(conversations);

@@ -2,7 +2,7 @@
   <el-container class="layout-container">
     <el-header height="60px">
       <div class="header-content">
-        <!-- 核心修改：用 router-link 包裹 logo -->
+
         <router-link to="/home" class="logo-link">
           <div class="logo">校园二手交易系统</div>
         </router-link>

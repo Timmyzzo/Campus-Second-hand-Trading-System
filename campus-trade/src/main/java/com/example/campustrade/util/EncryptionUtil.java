@@ -4,7 +4,7 @@ public class EncryptionUtil {
 
     private static final int SHIFT = 3; // 移动3位
 
-    // 加密
+    // 把字符串的每个字符的ASCII码加3
     public static String encrypt(String plainText) {
         if (plainText == null) {
             return null;
@@ -16,7 +16,7 @@ public class EncryptionUtil {
         return encryptedText.toString();
     }
 
-    // 解密 (虽然本次用不到，但写上总没错)
+    // 无用解密
     public static String decrypt(String encryptedText) {
         if (encryptedText == null) {
             return null;

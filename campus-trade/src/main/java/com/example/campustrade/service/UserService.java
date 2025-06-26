@@ -5,21 +5,21 @@ import com.example.campustrade.mapper.UserMapper;
 import com.example.campustrade.util.EncryptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List; // <<< 新增的导入语句
+import java.util.List;
 
-@Service
+@Service //声明这是一个服务类，负责业务逻辑处理
 public class UserService {
 
-    @Autowired
+    @Autowired//自动注入 UserMapper 的实例,让他操作数据库
     private UserMapper userMapper;
 
-    public boolean register(User user) {
+    public boolean register(User user) {//检查用户名是否存在
         if (userMapper.findByUsername(user.getUsername()) != null) {
             return false;
         }
         String encryptedPassword = EncryptionUtil.encrypt(user.getPassword());
         user.setPassword(encryptedPassword);
-        userMapper.insert(user);
+        userMapper.insert(user);//再次调用Mapper的方法，将最终的用户数据写入数据库。
         return true;
     }
 
@@ -35,6 +35,7 @@ public class UserService {
         User user = userMapper.findByUsername(username);
         if (user != null) {
             if (EncryptionUtil.encrypt(password).equals(user.getPassword())) {
+                // 如果密码匹配，登录成功，返回完整的User对象
                 return user;
             }
         }

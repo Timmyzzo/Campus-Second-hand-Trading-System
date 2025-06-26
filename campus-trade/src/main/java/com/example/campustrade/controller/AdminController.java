@@ -1,8 +1,8 @@
 package com.example.campustrade.controller;
 
-import com.example.campustrade.entity.User; // <<< 新增的导入语句
+import com.example.campustrade.entity.User;
 import com.example.campustrade.service.AdminService;
-import com.example.campustrade.service.UserService; // <<< 新增的导入语句
+import com.example.campustrade.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +20,7 @@ public class AdminController {
     @Autowired
     private org.springframework.jdbc.core.JdbcTemplate jdbcTemplate;
     @Autowired
-    private UserService userService; // <<< 新增的注入
+    private UserService userService;
 
     @PostMapping("/products/takedown/{productId}")
     public ResponseEntity<String> takeDownProduct(@PathVariable Integer productId) {
@@ -31,11 +31,7 @@ public class AdminController {
         return ResponseEntity.badRequest().body("操作失败，商品可能不存在。");
     }
 
-    /**
-     * 新增：删除商品接口
-     * @param id 商品ID
-     * @return 成功或失败的响应
-     */
+
     @DeleteMapping("/products/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") Integer id) {
         try {
@@ -55,12 +51,7 @@ public class AdminController {
     }
 
 
-
-
-    // 原来的方法签名是：
-// public ResponseEntity<Map<String, Object>> getSummary(@RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime)
-
-    // 用下面的新版本替换它：
+    //用一个Map接收所有查询条件
     @GetMapping("/summary")
     public ResponseEntity<Map<String, Object>> getSummary(@RequestParam Map<String, Object> params) {
         // params 这个 Map 会自动接收所有URL查询参数，如 keyword, category, minPrice 等
@@ -75,11 +66,7 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
-
-
-
-
-
+    //required = false表示这个查询参数是可选的。如果前端不传username，这个参数就是null，而不会报错。
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(
             @RequestParam(required = false) String username,

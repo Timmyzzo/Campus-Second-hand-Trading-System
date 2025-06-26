@@ -53,7 +53,7 @@
           </el-table-column>
           <el-table-column label="发布时间">
             <template #default="{ row }">
-              <span>{{ formatDateTime(row.created_at) }}</span>
+              <span>{{ formatDateTime(row.createdAt) }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -158,9 +158,11 @@ const handleTabClick = () => {
   resetQuery(); // 切换tab时，重置查询条件并重新加载数据
 };
 
+// ProfileView.vue
 const formatDateTime = (dateTimeString) => {
   if (!dateTimeString) return 'N/A';
-  const date = new Date(dateTimeString);
+  // 此时的 dateTimeString 是 "2024-06-21 15:30:00"
+  const date = new Date(dateTimeString); // new Date("2024-06-21 15:30:00") 可以被正确解析
   return date.toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-');
 };
 </script>

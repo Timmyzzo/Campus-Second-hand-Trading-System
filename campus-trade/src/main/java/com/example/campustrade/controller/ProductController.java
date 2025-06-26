@@ -10,13 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map; // <<< 就是缺少了这一行导入语句
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+    //private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private ProductService productService;
@@ -24,8 +24,9 @@ public class ProductController {
     @Autowired
     private ProductMapper productMapper;
 
-    @PostMapping("/publish")
+    @PostMapping("/publish")//发布商品
     public ResponseEntity<String> publishProduct(@RequestBody Product product) {
+        // 调用Service，根据返回结果响应
         boolean success = productService.addProduct(product);
         if (success) {
             return ResponseEntity.ok("商品发布成功！");
@@ -33,13 +34,13 @@ public class ProductController {
         return ResponseEntity.badRequest().body("发布失败，请检查输入信息。");
     }
 
-    @GetMapping
+    @GetMapping// 映射到 GET /api/products
     public ResponseEntity<List<Product>> getAllOnSaleProducts() {
         List<Product> products = productService.getAllOnSaleProducts();
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}")//影射到对应商品de ID
     public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
         Product product = productMapper.findById(id);
         if (product != null) {
@@ -48,16 +49,11 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    /**
-     * 【最终版】获取我发布的商品列表（支持复杂查询）
-     * @param sellerId 卖家ID
-     * @param params 包含所有查询条件的Map
-     * @return 商品列表
-     */
+
     @GetMapping("/my")
     public ResponseEntity<List<Map<String, Object>>> getMyProducts(
-            @RequestParam Integer sellerId,
-            @RequestParam Map<String, Object> params
+            @RequestParam Integer sellerId,//从查询参数中获取sellerId
+            @RequestParam Map<String, Object> params//获取所有查询参数到Map中
     ) {
         List<Map<String, Object>> products = productService.getMyProducts(sellerId, params);
         return ResponseEntity.ok(products);

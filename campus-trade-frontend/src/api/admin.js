@@ -1,4 +1,4 @@
-// src/api/admin.js (最终完整版)
+// src/api/admin.js
 import axios from 'axios';
 
 const request = axios.create({
@@ -6,7 +6,7 @@ const request = axios.create({
   timeout: 5000
 });
 
-// 获取汇总统计数据 (这个函数本身设计得很好，无需修改)
+// 获取汇总统计数据
 export const getSummaryService = (params) => {
   return request.get('/admin/summary', { params });
 }
